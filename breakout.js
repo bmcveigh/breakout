@@ -1,4 +1,3 @@
-// JavaScript code goes here
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -44,6 +43,15 @@ var score = 0;
  */
 var lives = 3;
 
+/**
+ * Keep track of the level player is on.
+ */
+var level = 1;
+
+var ballColor = "#ff0000";
+var paddleColor = "#000000";
+var brickColor = "#0095DD";
+
 var bricks = [];
 for (c = 0; c < brickColumnCount; c++) {
   bricks[c] = [];
@@ -55,7 +63,7 @@ for (c = 0; c < brickColumnCount; c++) {
 function drawBall() {
   ctx.beginPath();
   ctx.arc(x, y, ballRadius, 0, Math.PI*2);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = ballColor;
   ctx.fill();
   ctx.closePath();
 }
@@ -63,7 +71,7 @@ function drawBall() {
 function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
-  ctx.fillStyle = "#0095dd";
+  ctx.fillStyle = paddleColor;
   ctx.fill();
   ctx.closePath();
 }
@@ -77,6 +85,7 @@ function draw() {
   collisionDetection();
   drawScore();
   drawLives();
+  drawLevel();
 
   if (x + dx < ballRadius) {
     dx = -dx;
@@ -132,7 +141,7 @@ for(c=0; c<brickColumnCount; c++) {
       bricks[c][r].y = brickY;
       ctx.beginPath();
       ctx.rect(brickX, brickY, brickWidth, brickHeight);
-      ctx.fillStyle = "#0095DD";
+      ctx.fillStyle = brickColor;
       ctx.fill();
       ctx.closePath();
     }
@@ -173,8 +182,29 @@ function collisionDetection() {
           b.status = 0;
           score++;
           if(score == brickRowCount*brickColumnCount) {
-            alert("Congratulations! You're the lucky winner!");
-            document.location.reload();
+            level++;
+
+            // Change the color every 5 levels.
+
+            // alert("Congratulations! You're the lucky winner!");
+            if (level == 2) {
+              ballColor = "#000000";
+              paddleColor = "blue";
+              brickColor = "orange";
+            }
+            else if (level == 3) {
+              ballColor = "brown";
+              paddleColor = "maroon";
+              brickColor = "green";
+            }
+
+            // Populate the bricks.
+            for (c = 0; c < brickColumnCount; c++) {
+              bricks[c] = [];
+              for (r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = { x: 0, y: 0, status: 1};
+              }
+            }
           }
         }
       }
@@ -192,6 +222,12 @@ function drawLives() {
   ctx.font = "14pt Arial";
   ctx.fillStyle = "#0095dd";
   ctx.fillText("Lives: " + lives, canvas.width-75, 20);
+}
+
+function drawLevel() {
+  ctx.font = "14pt Arial";
+  ctx.fillStyle = "#0095dd";
+  ctx.fillText("Level: " + level, canvas.width-150, 20);
 }
 
 function mouseMoveHandler(e) {
