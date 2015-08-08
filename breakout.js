@@ -56,6 +56,10 @@ var lives = 3;
  */
 var level = 1;
 
+/**
+ * Store the different colors as different variables because we will want
+ * to change color scheme on different levels.
+ */
 var ballColor = "#ff0000";
 var paddleColor = "#000000";
 var brickColor = "#0095DD";
@@ -189,7 +193,7 @@ function collisionDetection() {
           dy = -dy;
           b.status = 0;
           score++;
-          if(score == brickRowCount*brickColumnCount) {
+          if(score == brickRowCount*brickColumnCount*level) {
             level++;
 
             // Change the color every 5 levels.
@@ -206,6 +210,7 @@ function collisionDetection() {
               brickColor = "green";
             }
 
+            bricks = [];
             // Populate the bricks.
             for (c = 0; c < brickColumnCount; c++) {
               bricks[c] = [];
