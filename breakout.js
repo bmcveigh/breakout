@@ -1,3 +1,11 @@
+/**
+ * A 2D game with a ball, a paddle, and some bricks.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Games/Workflows/2D_Breakout_game_pure_JavaScript/Finishing_up
+ *
+ * Modified and enhanced by Brian McVeigh.
+ */
+
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 
